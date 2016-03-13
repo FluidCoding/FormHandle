@@ -1,12 +1,3 @@
-<?php 
-	if(isset($_POST["firstName"])){
-
-	}
-	else{
-		echo "<p>Please fill out your information</p>";
-	}
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,17 +26,18 @@
 </head>
 <body>
 
-<?php
-	if( isset($_POST["firstName"]) ){
+<?php 
+	if(isset($_POST["firstName"])){
 		echo "<h1>Hello " . $_POST["firstName"] . "</h1>";
 	}
+	else{
+		echo "<p>Please fill out your information</p>";
+	}
 ?>
-
 
 <form action="formIn.php" method="post" id="FormIn" name="FormIn">
 
 <?php
-
 	$firstName = $_POST["firstName"];
 	$lastName = $_POST["lastName"];
 
@@ -61,13 +53,9 @@
 		echo "<input type='hidden' name='firstName' value='". $firstName . "' />";
 		echo "<input type='hidden' name='lastName' value='". $lastName . "' />";
 	}
-	else{
-		
-	
+	else{		
 		echo "<label for='firstName'>First Name: </label><input type='text' length='12' value='" . $firstName . "' name='firstName' />";
-
 		echo "<label for='lastName'>Last Name: </label><input type='text' length='12' value='" . $lastName . "' name='lastName' />";
-
 	}
 ?>
 <br />
