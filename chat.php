@@ -18,6 +18,8 @@ $userID = $_SESSION["userID"];
 
 	<style type="text/css">
 	body{
+		margin:0px;
+		padding:0px;
 		background-color: #1E3637;
 	}
 	div a#logout{
@@ -32,12 +34,13 @@ $userID = $_SESSION["userID"];
 		min-width: 500px;
 		width: 950px;
 		height: 100%;
+		margin-top: 75px;
 		margin-left: auto;
 		margin-right: auto;
 		background-color: #214187;
 		color: #D2F608;
 		font-family: Tahoma, Geneva, sans-serif;
-		padding: 12px;
+		padding: 15px;
 		border-radius: 9px;
 		border: 2px solid #000;
 	}
@@ -47,19 +50,54 @@ $userID = $_SESSION["userID"];
 	}
 	
 	input[type='text']#chatText{
-		width: 95%;
+		width: 525px;
 		padding:7px;
 		margin-right: 10px;
 		background-color: #eee;
+		display:inline-block;
+	}
+	button#send{
+		padding: 8px;
+		display:inline;
+	}
+	#welcome{  
+		position: absolute;
+    	top: 0px;
+		margin: 0px;
+		padding: 0px;
+		width: 100%;
+		background-color: #FF8D00;
+		text-align: center;
+	}
+	#welcome h1{
+		margin:0px;
+		padding-top: 3px;
+		padding-bottom: 3px;
 	}
 	</style>
 	<script>
+	var xhr;
 	function initChat(){
 		console.log("Init Chat");
+		xhr = new XMLHttpRequest();
+		xhr.open('GET', 'send-ajax-data.php');
+		xhr.send(null);
+
+		xhr.onreadystatechange = function () {
+		
+		var DONE = 4; // readyState 4 means the request is done.
+	    var OK = 200; // status 200 is a successful return.
+	    if (xhr.readyState === DONE) {
+	    	if (xhr.status === OK) 
+	     		console.log(xhr.responseText); // 'This is the returned text.'
+	    	} else {
+	    		console.log('Error: ' + xhr.status); // An error occurred during the request.
+	    	}
+		};
 	}
 
 	function sendChat(){
-		
+
 	}
 	function listenChat(){
 
@@ -67,7 +105,7 @@ $userID = $_SESSION["userID"];
 	</script>
 </head>
 <body onload="initChat();">
-<h1>Hello <?php echo $_SESSION["userName"]; ?>!</h1>
+<div id="welcome" name="welcome"><h1>Hello <?php echo $_SESSION["userName"]; ?>!</h1></div>
 <div id="container">
 	<a id="logout" href="logout.php">Logout</a>
 	<textarea enabled="false" readonly="true" cols="100" rows="14" id="chatBox" name="chatBox"></textarea><br />
