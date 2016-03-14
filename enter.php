@@ -59,8 +59,15 @@
 <?php
 	include_once("vars.php");
 	showLogin();
-
-
+	if(isset($_GET['register'])){
+		$regState = $_GET['register'];
+		if($regState=="success"){
+			echo "<p>Account Created! Please Login</p>";
+		}
+		else{
+			echo "<p>Registration Failed</p>";
+		}
+	}
 	function showLogin(){
 		echo "<form id='login' method='post' name='login' action='login.php'>";
 		echo "<label for='name'>Username: </label><input type='text' length='12' name='name' /><br />";

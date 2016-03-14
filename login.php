@@ -27,7 +27,7 @@
 		//	return;
 		}else{
 
-			//	header("Location: enter.php?register='success'"); /* Redirect browser */
+			//	header("Location: enter.php?register=success"); /* Redirect browser */
 			//	exit();
 		}
 		try {
@@ -43,7 +43,8 @@
 				    	"verified" => FALSE
 					));
 			if( $res ){
-//				echo "Success.";
+				header("Location: enter.php?register=success"); /* Redirect browser */
+				exit();
 			}
 			else {
 //				echo "Failed.";
