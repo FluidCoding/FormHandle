@@ -8,24 +8,25 @@
 	$passWordConfirm = $_POST["passWordConfirm"];
 	$checked = $_POST["signIn"];
 
-
+/*
 	echo "user name : " . $userName . "<br />";
 	echo "email: " . $email . "<br />";
 	echo "password: " . md5($passWord) . "<br />";
 	if($passWordConfirm.length>1){ echo "passWordConfirm : " . md5($passWordConfirm) . "<br />";}
 	echo "checked : " . $checked . "<br />";
-
+*/
 	($checked=="on")?login($userName, $passWord):register($userName, $passWord, $email, $passWordConfirm);
 
 
 	function register($user, $pass, $email, $confirm){
 		global $dbP, $dbConn, $dbU;
-	echo "Var check ". $dbP;
 		if($pass != $confirm){
-			echo "Passwords do not match...";
+//			echo "Passwords do not match...";
+			header("Location: enter.php"); /* Redirect browser */
+			exit();
 			return;
 		}else{
-			echo "Registering..." . $user . " P " . $pass . " E " . $email;
+			echo "Registering..." . $user . " : " . $email;
 		}
 		try {
   		  	$conn = new PDO($dbConn, $dbU, $dbP);
@@ -40,10 +41,10 @@
 				    	"verified" => FALSE
 					));
 			if( $res ){
-				echo "Success.";
+//				echo "Success.";
 			}
 			else {
-				echo "Failed.";
+//				echo "Failed.";
 			}
   		}
 		catch(PDOException $e)
@@ -55,23 +56,25 @@
 
 	function login($userName, $passWord){
 		global $dbP, $dbConn, $dbU;
-		echo "Var check ". $dbP . $dbConn . $dbU;
-		echo "Logging in..." . $userName . " P " . $passWord . " MD5d : " . md5($passWord). "<br />";  
+//		echo "Var check ". $dbP . $dbConn . $dbU;
+//		echo "Logging in..." . $userName . " P " . $passWord . " MD5d : " . md5($passWord). "<br />";  
 	  	$conn = new PDO($dbConn, $dbU, $dbP);
     	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  		$statement  = $conn->prepare("SELECT id, name, password FROM users WHERE name = :userName AND password = :passWord");
+  		$statement  = $conn->prepare("SELECT id, name FROM users WHERE name = :userName AND password = :passWord");
   		$statement->bindParam(':userName', $userName, PDO::PARAM_STR);
 		$statement->bindParam(':passWord', md5($passWord), PDO::PARAM_STR);
 			$res = $statement->execute();
 			$result = $statement->fetchAll();
-			echo $result . "<br/>";
-			echo count($result) ."<br/>";
+	//		echo $result . "<br/>";
+//			echo count($result) ."<br/>";
 			if(count($result)){
 				echo "Login Succes.";
 			}
 			else {
-				echo "Incorrect Username Or Password.";
+//				echo "Incorrect Username Or Password.";
+				header("Location: enter.php"); /* Redirect browser */
+				exit();
 			}
 
 	}
