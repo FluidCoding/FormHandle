@@ -27,7 +27,6 @@
 	$message = new Message($u, $m);
 	$messages = array();
 
-	echo "Hello ";
 	if(isset($m) & isset($u)){
 		try {
 	  		$conn = new PDO($dbConn, $dbU, $dbP);
@@ -60,7 +59,7 @@
 			  	$conn = new PDO($dbConn, $dbU, $dbP);
     	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  		$statement  = $conn->prepare("SELECT users.name as username, send_time, txt FROM messages JOIN users ON messages.user_id=users.id WHERE send_to = 0 ORDER BY send_time DESC LIMIT 10");
+  		$statement  = $conn->prepare("SELECT users.name as username, send_time, txt FROM messages JOIN users ON messages.user_id=users.id WHERE send_to = 0 ORDER BY send_time DESC LIMIT 13");
 		$res = $statement->execute();
 		$result = $statement->fetchAll();
 		header('Content-type: application/json');

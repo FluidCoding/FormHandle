@@ -46,7 +46,7 @@ $userID = $_SESSION["userID"];
 	}
 	#chatBox{
 		background-color: #BDBDBD;
-		text-align: right;
+		text-align: left;
 	}
 	
 	input[type='text']#chatText{
@@ -79,21 +79,61 @@ $userID = $_SESSION["userID"];
 	var xhr;
 	function initChat(){
 		console.log("Init Chat");
+		ping();
+    }
+	
+	function ping(){
 		xhr = new XMLHttpRequest();
 		xhr.open('GET', 'chatter.php?ping=1');
 		xhr.send(null);
+		xhr.onload=packBack.bind(xhr);
+	}
 
-		xhr.onreadystatechange = function () {
-		
-		var DONE = 4; // readyState 4 means the request is done.
-	    var OK = 200; // status 200 is a successful return.
-	    if (xhr.readyState === DONE) {
-	    	if (xhr.status === OK) 
-	     		console.log(xhr.responseText); // 'This is the returned text.'
-	    	} else {
-	    		console.log('Error: ' + xhr.status); // An error occurred during the request.
-	    	}
-		};
+	var x=0;
+	var Messages = [];
+	function packBack(){
+		if (xhr.readyState === xhr.DONE) {
+        if (xhr.status === 200) {
+            //console.log(xhr.responseText);
+            JSON.parse(xhr.responseText, function(k, v) {
+  				if(k==='user'){
+  					Messages[x] = new Message();
+  					Messages[x].user = v;
+  				}
+  				else if(k==='txt'){
+  					Messages[x].txt = v;
+  				}
+  				else if(k==='timeStamp'){
+  					Messages[x].timeStamp = v;
+  				}
+  				else{
+  					x++;
+  				}
+  			});
+        }
+        }
+        updateChatBox();
+        x=0;
+		window.setTimeout(ping, 5000);
+	}
+	var Mess = {
+		user:'',
+		txt: '',
+		timeStamp: ''};
+	var Message = function(user, txt, timeStamp){
+		this.user = user;
+		this.txt = txt;
+		this.timeStamp = timeStamp;
+	};
+	function updateChatBox(){
+		var chatBox = document.getElementById("chatBox");
+		var out = "";
+		for(var i=Messages.length-1; i >=0 ; i--){
+			out+= "[" + Messages[i].timeStamp + "] - ";
+			out+= Messages[i].user + ": ";
+			out+= Messages[i].txt + "\n";
+		}
+		chatBox.innerHTML=out;
 	}
 
 	function sendChat(){
