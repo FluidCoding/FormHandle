@@ -22,11 +22,13 @@
 		global $dbP, $dbConn, $dbU;
 		if($pass != $confirm){
 //			echo "Passwords do not match...";
-			header("Location: enter.php"); /* Redirect browser */
-			exit();
-			return;
+		//	header("Location: enter.php"); /* Redirect browser */
+		//	exit();
+		//	return;
 		}else{
-			echo "Registering..." . $user . " : " . $email;
+
+			//	header("Location: enter.php?register='success'"); /* Redirect browser */
+			//	exit();
 		}
 		try {
   		  	$conn = new PDO($dbConn, $dbU, $dbP);
@@ -69,10 +71,17 @@
 	//		echo $result . "<br/>";
 //			echo count($result) ."<br/>";
 			if(count($result)){
-				echo "Login Succes.";
+				session_start();
+			    $_SESSION['userName'] = $result;
+			    $_SESSION['userID'] = $result[0]['id'];
+			    
+			    $_SESSION['userName'] = $userName;
+				header("Location: chat.php"); /* Redirect browser */
+				exit();
 			}
 			else {
 //				echo "Incorrect Username Or Password.";
+//			    $_SESSION['userID'] =  				
 				header("Location: enter.php"); /* Redirect browser */
 				exit();
 			}

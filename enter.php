@@ -1,3 +1,11 @@
+<?php
+	session_start();
+	if(isset($_SESSION['userID'])){
+		header("Location: chat.php"); /* Redirect browser */
+		exit();
+	}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,25 +57,7 @@
 
 
 <?php
-   
 	include_once("vars.php");
-
-	error_reporting(E_ALL);
-	ini_set('display_errors', 'On');
-	try {
-  		$conn = new PDO($dbConn, $dbU, $dbP);
-    	// set the PDO error mode to exception
-    	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    	 
-    }
-	catch(PDOException $e)
-    {
-    	//echo "Connection failed: " . $e->getMessage();
-    }
-	
-
-	$conn = null;
-
 	showLogin();
 
 
